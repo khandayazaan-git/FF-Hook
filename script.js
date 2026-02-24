@@ -24,7 +24,6 @@ function copyHook() {
   }
 
   navigator.clipboard.writeText(hookText).then(() => {
-    alert("Hook copied to clipboard! 🔥");
   }).catch(err => {
     alert("Failed to copy!");
   });
