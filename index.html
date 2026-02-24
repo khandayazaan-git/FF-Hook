@@ -1,37 +1,628 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <title>Free Fire Hook Generator</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <link rel="stylesheet" href="style.css"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+
+  <style>
+    /* ========== VARIABLES & RESET ========== */
+    :root {
+      --bg-color: #0b0e14;
+      --surface-color: #161b28;
+      --surface-hover: #1e2538;
+      --primary: #ff4655;
+      --primary-hover: #ff5e6b;
+      --primary-glow: rgba(255, 70, 85, 0.4);
+      --text-main: #ffffff;
+      --text-muted: #9ba1b0;
+      --border-color: #2a3143;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background: var(--bg-color);
+      color: var(--text-main);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ========== HEADER & NAVIGATION ========== */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(11, 14, 20, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-color);
+    }
+    .header-inner {
+      max-width: 1100px;
+      margin: auto;
+      padding: 16px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+    }
+    .logo {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--text-main);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      z-index: 101; /* Keep above mobile menu */
+    }
+    .logo span {
+      color: var(--primary);
+    }
+
+    /* Desktop Nav */
+    nav {
+      display: flex;
+      align-items: center;
+    }
+    nav a {
+      margin-left: 24px;
+      text-decoration: none;
+      color: var(--text-muted);
+      font-size: 14px;
+      font-weight: 600;
+      transition: color 0.3s ease;
+    }
+    nav a:hover {
+      color: var(--primary);
+    }
+
+    /* Hamburger Menu Button */
+    .menu-toggle {
+      display: none;
+      flex-direction: column;
+      justify-content: space-between;
+      width: 24px;
+      height: 18px;
+      cursor: pointer;
+      z-index: 101; /* Keep above mobile menu */
+    }
+    .menu-toggle span {
+      display: block;
+      height: 2px;
+      width: 100%;
+      background-color: var(--text-main);
+      border-radius: 2px;
+      transition: all 0.3s ease-in-out;
+    }
+
+    /* ========== HERO / CAROUSEL ========== */
+    .hero {
+      position: relative;
+      height: 350px;
+      overflow: hidden;
+      border-bottom: 1px solid var(--border-color);
+      background: radial-gradient(circle at top, #161b28, var(--bg-color) 80%);
+    }
+    .carousel {
+      display: flex;
+      height: 100%;
+      transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+    }
+    .slide {
+      min-width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 20px;
+    }
+    .slide h1 {
+      font-size: 40px;
+      font-weight: 800;
+      max-width: 700px;
+      text-align: center;
+      line-height: 1.2;
+      text-transform: uppercase;
+    }
+    .slide span {
+      color: var(--primary);
+      text-shadow: 0 0 20px var(--primary-glow);
+    }
+
+    .dots {
+      position: absolute;
+      bottom: 20px;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+    }
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #333;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .dot.active {
+      background: var(--primary);
+      box-shadow: 0 0 10px var(--primary-glow);
+      transform: scale(1.2);
+    }
+
+    /* ========== SECTIONS ========== */
+    .section {
+      max-width: 1100px;
+      margin: auto;
+      padding: 60px 20px;
+    }
+    .section h2 {
+      text-align: center;
+      margin-bottom: 10px;
+      font-size: 28px;
+      font-weight: 800;
+    }
+    .section p.subtitle {
+      text-align: center;
+      max-width: 620px;
+      margin: 0 auto 40px;
+      color: var(--text-muted);
+      font-size: 15px;
+    }
+
+    /* ========== TWO-COLUMN GRID LAYOUT ========== */
+    .tool-wrap {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Adjusted minmax for better mobile fit */
+      gap: 30px;
+      justify-items: center;
+      max-width: 1050px;
+      margin: 0 auto;
+    }
+
+    .app {
+      background: var(--surface-color);
+      width: 100%;
+      max-width: 500px;
+      padding: 32px;
+      border-radius: 16px;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+      animation: slideUp 0.6s ease-out;
+      display: flex;
+      flex-direction: column;
+    }
+    .app h3 {
+      text-align: center;
+      margin-bottom: 24px;
+      font-size: 20px;
+      font-weight: 600;
+    }
+
+    /* FORM INPUTS & SELECT */
+    select,
+    input[type="text"],
+    input[type="email"],
+    textarea {
+      width: 100%;
+      padding: 14px;
+      background: var(--bg-color);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      border-radius: 8px;
+      margin-bottom: 20px;
+      font-size: 15px;
+      font-weight: 600;
+      outline: none;
+      transition: border-color 0.3s;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    select {
+      cursor: pointer;
+      appearance: none;
+      background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%239ba1b0%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
+      background-repeat: no-repeat;
+      background-position: right 16px top 50%;
+      background-size: 12px auto;
+    }
+
+    select:focus,
+    input:focus,
+    textarea:focus {
+      border-color: var(--primary);
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 104px;
+    }
+
+    ::placeholder {
+      color: #646b7a;
+      opacity: 1;
+    }
+
+    .hook-box {
+      background: var(--bg-color);
+      border: 2px dashed var(--border-color);
+      border-radius: 8px;
+      min-height: 100px;
+      padding: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      margin-bottom: 24px;
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--text-muted);
+      transition: all 0.3s ease;
+      flex-grow: 1;
+    }
+
+    .buttons {
+      display: flex;
+      gap: 12px;
+      margin-top: auto;
+    }
+    
+    button {
+      flex: 1;
+      padding: 14px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 800;
+      font-size: 15px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      transition: all 0.3s ease;
+    }
+    .generate {
+      background: var(--primary);
+      color: #fff;
+      box-shadow: 0 4px 15px var(--primary-glow);
+    }
+    .generate:hover {
+      background: var(--primary-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px var(--primary-glow);
+    }
+    .generate:active {
+      transform: translateY(0);
+    }
+    
+    .copy {
+      background: var(--surface-hover);
+      color: var(--text-main);
+      border: 1px solid var(--border-color);
+    }
+    .copy:hover {
+      background: #252c41;
+      transform: translateY(-2px);
+    }
+
+    .full-width-btn {
+      width: 100%;
+      margin-top: auto;
+    }
+
+    /* ========== FEATURES ========== */
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+      margin-top: 30px;
+    }
+    .feature {
+      background: var(--surface-color);
+      border: 1px solid var(--border-color);
+      padding: 24px;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      transition: transform 0.3s ease, border-color 0.3s ease;
+    }
+    .feature:hover {
+      transform: translateY(-5px);
+      border-color: var(--primary);
+    }
+    .feature-icon {
+      font-size: 24px;
+      background: rgba(255, 70, 85, 0.1);
+      padding: 10px;
+      border-radius: 8px;
+      display: flex;
+    }
+
+    /* ========== FOOTER ========== */
+    footer {
+      background: #07090d;
+      border-top: 1px solid var(--border-color);
+      margin-top: 40px;
+    }
+    .footer-inner {
+      max-width: 1100px;
+      margin: auto;
+      padding: 40px 20px;
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 30px;
+    }
+    .footer-inner h4 {
+      margin-bottom: 12px;
+      color: var(--text-main);
+      font-size: 18px;
+    }
+    .footer-inner p {
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+    .footer-bottom {
+      text-align: center;
+      padding: 20px;
+      border-top: 1px solid var(--border-color);
+      color: var(--text-muted);
+      font-size: 13px;
+    }
+
+    /* ========== ANIMATIONS ========== */
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ========== RESPONSIVE (MOBILE) ========== */
+    @media (max-width: 768px) {
+      .menu-toggle {
+        display: flex;
+      }
+      
+      nav {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background: var(--surface-color);
+        flex-direction: column;
+        align-items: center;
+        padding: 20px 0;
+        border-bottom: 1px solid var(--border-color);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        clip-path: polygon(0 0, 100% 0, 100% 0, 0 0);
+        transition: clip-path 0.4s ease-in-out;
+      }
+      
+      nav.active {
+        clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+      }
+
+      nav a {
+        margin: 15px 0;
+        font-size: 16px;
+      }
+
+      /* Hamburger animation */
+      .menu-toggle.active span:nth-child(1) {
+        transform: translateY(8px) rotate(45deg);
+      }
+      .menu-toggle.active span:nth-child(2) {
+        opacity: 0;
+      }
+      .menu-toggle.active span:nth-child(3) {
+        transform: translateY(-8px) rotate(-45deg);
+      }
+
+      /* Mobile typography & spacing */
+      .slide h1 { font-size: 26px; padding: 0 10px; }
+      .section { padding: 40px 15px; }
+      .app { padding: 24px; }
+      
+      /* Stack buttons on very small screens */
+      .buttons { flex-direction: column; }
+      
+      /* Stack footer columns */
+      .footer-inner {
+        grid-template-columns: 1fr;
+        text-align: center;
+        gap: 20px;
+      }
+    }
+  </style>
 </head>
+
 <body>
 
-  <div class="app">
-    <h1>Hook Generator</h1>
-
-    <select id="mode">
-      <option value="all">All Modes</option>
-      <option value="1v1">1v1</option>
-      <option value="1v2">1v2</option>
-      <option value="1v3">1v3</option>
-      <option value="1v4">1v4</option>
-      <option value="cs">Clash Squad</option>
-      <option value="ranked">Ranked</option>
-      <option value="lonewolf">Lone Wolf</option>
-    </select>
-
-    <div id="hook" class="hook-box">
-      Click Generate 👇
+<header>
+  <div class="header-inner">
+    <div class="logo">FF <span>Hooks</span></div>
+    
+    <div class="menu-toggle" id="mobile-menu">
+      <span></span>
+      <span></span>
+      <span></span>
     </div>
 
-    <div class="btn-group">
-      <button onclick="generateHook()">Generate Hook</button>
-      <button onclick="copyHook()" class="copy-btn">Copy</button>
+    <nav id="nav-menu">
+      <a href="#hero">Home</a>
+      <a href="#generator">Generator</a>
+      <a href="#features">Features</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero" id="hero">
+  <div class="carousel" id="carousel">
+    <div class="slide"><h1>Make viewers <span>STOP scrolling</span></h1></div>
+    <div class="slide"><h1>Perfect hooks for <span>Shorts & Reels</span></h1></div>
+    <div class="slide"><h1>Built for <span>Free Fire creators</span></h1></div>
+  </div>
+  <div class="dots" id="dots"></div>
+</section>
+
+<section class="section" id="generator">
+  <h2>The Ultimate Hook Generator</h2>
+  <p class="subtitle">Create curiosity-driven hooks that skyrocket your watch time and engagement.</p>
+  
+  <div class="tool-wrap">
+    
+    <div class="app">
+      <h3>Configure Your Hook</h3>
+
+      <select id="mode">
+        <option value="all">🎮 All Modes</option>
+        <option value="1v1">⚔️ 1v1 Custom</option>
+        <option value="1v2">🔥 1v2 Clutch</option>
+        <option value="1v3">💀 1v3 Clutch</option>
+        <option value="1v4">👑 1v4 Squad Wipe</option>
+        <option value="cs">🏆 Clash Squad</option>
+        <option value="ranked">🎖️ Ranked Match</option>
+        <option value="lonewolf">🐺 Lone Wolf</option>
+      </select>
+
+      <div id="hook" class="hook-box">Click Generate to get your next viral hook 👇</div>
+
+      <div class="buttons">
+        <button class="generate" onclick="generateHook()">Generate</button>
+        <button class="copy" onclick="copyHook()">Copy Hook</button>
+      </div>
+    </div>
+
+    <div class="app">
+      <h3>Get in Touch</h3>
+      
+      <form id="contactForm" style="display: flex; flex-direction: column; flex-grow: 1;" onsubmit="event.preventDefault();">
+        <input type="text" id="name" placeholder="Your Name" required>
+        <input type="email" id="email" placeholder="Email Address" required>
+        <textarea id="message" placeholder="What's on your mind?" required></textarea>
+        
+        <button type="submit" class="generate full-width-btn">Send Message</button>
+      </form>
+    </div>
+
+  </div>
+</section>
+
+<section class="section" id="features">
+  <h2>Why This Tool?</h2>
+  <div class="features">
+    <div class="feature">
+      <div class="feature-icon">⚡</div>
+      <div>Backend-powered hooks</div>
+    </div>
+    <div class="feature">
+      <div class="feature-icon">📱</div>
+      <div>Shorts-first design</div>
+    </div>
+    <div class="feature">
+      <div class="feature-icon">🎯</div>
+      <div>Creator-tested hooks</div>
     </div>
   </div>
+</section>
 
-  <script src="script.js"></script>
+<footer>
+  <div class="footer-inner">
+    <div>
+      <h4>FF Hooks</h4>
+      <p>Professional hook generator tailored for gaming creators. Boost your retention graph and turn casual viewers into loyal subscribers.</p>
+    </div>
+    <div>
+      <h4>Quick Links</h4>
+      <p style="line-height: 2;">
+        <a href="#hero" style="color:var(--text-muted); text-decoration:none;">Home</a><br>
+        <a href="#generator" style="color:var(--text-muted); text-decoration:none;">Generator</a><br>
+        <a href="#features" style="color:var(--text-muted); text-decoration:none;">Features</a>
+      </p>
+    </div>
+  </div>
+  <div class="footer-bottom">© 2026 Rayleigh_exe | FF Hooks</div>
+</footer>
+
+<script>
+  // --- MOBILE MENU LOGIC ---
+  const menuToggle = document.querySelector('#mobile-menu');
+  const navMenu = document.querySelector('#nav-menu');
+
+  menuToggle.addEventListener('click', () => {
+    menuToggle.classList.toggle('active');
+    navMenu.classList.toggle('active');
+  });
+
+  // Close menu when clicking a link
+  document.querySelectorAll('#nav-menu a').forEach(link => {
+    link.addEventListener('click', () => {
+      menuToggle.classList.remove('active');
+      navMenu.classList.remove('active');
+    });
+  });
+
+  // --- CAROUSEL LOGIC ---
+  const carousel = document.getElementById("carousel");
+  const dotsBox = document.getElementById("dots");
+  const slides = carousel.children;
+  let index = 0, timer;
+
+  for(let i=0; i<slides.length; i++){
+    const d = document.createElement("div");
+    d.className = "dot" + (i === 0 ? " active" : "");
+    d.onclick = () => goTo(i);
+    dotsBox.appendChild(d);
+  }
+
+  function goTo(i){
+    index = i;
+    carousel.style.transform = `translateX(-${i * 100}%)`;
+    document.querySelectorAll(".dot").forEach((d, n) => {
+      d.classList.toggle("active", n === i);
+    });
+  }
+
+  function auto(){
+    index = (index + 1) % slides.length;
+    goTo(index);
+  }
+
+  function start(){ timer = setInterval(auto, 4000); }
+  function stop(){ clearInterval(timer); }
+
+  start();
+  document.getElementById("hero").onmouseenter = stop;
+  document.getElementById("hero").onmouseleave = start;
+
+  // --- PLACEHOLDER BUTTON LOGIC ---
+  function generateHook() {
+    const hookBox = document.getElementById('hook');
+    hookBox.style.color = "#ffffff";
+    hookBox.innerText = "Generating...";
+    setTimeout(() => {
+        hookBox.innerText = "Lone Wolf... this silence was dangerous 🐺";
+    }, 400);
+  }
+
+  function copyHook() {
+    const text = document.getElementById('hook').innerText;
+    if(text && text !== "Click Generate to get your next viral hook 👇" && text !== "Generating...") {
+      navigator.clipboard.writeText(text);
+      const btn = document.querySelector('.copy');
+      btn.innerText = "Copied!";
+      setTimeout(() => btn.innerText = "Copy Hook", 2000);
+    }
+  }
+</script>
+
+<script src="script.js"></script>
+
 </body>
 </html>
