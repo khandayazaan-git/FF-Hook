@@ -553,7 +553,7 @@
     <div class="app">
       <h3>Get in Touch</h3>
       
-      <form id="contactForm" style="display: flex; flex-direction: column; flex-grow: 1;" onsubmit="event.preventDefault();">
+      <form id="contactForm" style="display: flex; flex-direction: column; flex-grow: 1;">
         <input type="text" id="name" placeholder="Your Name" required>
         <input type="email" id="email" placeholder="Email Address" required>
         <textarea id="message" placeholder="What's on your mind?" required></textarea>
@@ -687,7 +687,41 @@
     }
   }
 </script>
+<script>
+document.getElementById("contactForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
 
+  const name = document.getElementById("name").value;
+  const email = document.getElementById("email").value;
+  const message = document.getElementById("message").value;
+
+  const btn = e.target.querySelector("button");
+  btn.innerText = "Sending...";
+
+  try {
+    const res = await fetch("https://ff-hook-backend.onrender.com/contact", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name, email, message })
+    });
+
+    const data = await res.json();
+
+    if (data.success) {
+      btn.innerText = "Sent ✅";
+      e.target.reset();
+    } else {
+      btn.innerText = "Failed ❌";
+    }
+  } catch (err) {
+    btn.innerText = "Error ❌";
+  }
+
+  setTimeout(() => {
+    btn.innerText = "Send Message";
+  }, 3000);
+});
+</script>
 <script src="script.js"></script>
 
 </body>
