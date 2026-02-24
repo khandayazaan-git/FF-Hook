@@ -15,3 +15,17 @@ async function generateHook() {
   const random = data[Math.floor(Math.random() * data.length)];
   document.getElementById("hook").innerText = random.hook;
 }
+function copyHook() {
+  const hookText = document.getElementById("hook").innerText;
+
+  if (hookText === "Click Generate 👇") {
+    alert("Generate a hook first!");
+    return;
+  }
+
+  navigator.clipboard.writeText(hookText).then(() => {
+    alert("Hook copied to clipboard! 🔥");
+  }).catch(err => {
+    alert("Failed to copy!");
+  });
+}
