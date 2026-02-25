@@ -60,7 +60,7 @@
       color: var(--text-main);
       letter-spacing: 1px;
       text-transform: uppercase;
-      z-index: 101; /* Keep above mobile menu */
+      z-index: 101;
     }
     .logo span {
       color: var(--primary);
@@ -91,7 +91,7 @@
       width: 24px;
       height: 18px;
       cursor: pointer;
-      z-index: 101; /* Keep above mobile menu */
+      z-index: 101;
     }
     .menu-toggle span {
       display: block;
@@ -159,7 +159,7 @@
 
     /* ========== SECTIONS ========== */
     .section {
-      max-width: 1100px;
+      max-width: 1200px;
       margin: auto;
       padding: 60px 20px;
     }
@@ -177,13 +177,13 @@
       font-size: 15px;
     }
 
-    /* ========== TWO-COLUMN GRID LAYOUT ========== */
+    /* ========== GRID LAYOUT ========== */
     .tool-wrap {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Adjusted minmax for better mobile fit */
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
       gap: 30px;
       justify-items: center;
-      max-width: 1050px;
+      max-width: 1150px;
       margin: 0 auto;
     }
 
@@ -245,11 +245,6 @@
       min-height: 104px;
     }
 
-    ::placeholder {
-      color: #646b7a;
-      opacity: 1;
-    }
-
     .hook-box {
       background: var(--bg-color);
       border: 2px dashed var(--border-color);
@@ -268,6 +263,49 @@
       flex-grow: 1;
     }
 
+    /* PLAY WITH ME STYLES */
+    .game-selector {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    .game-selector .game-btn:last-child {
+      grid-column: span 2;
+    }
+    .game-btn {
+      background: var(--bg-color);
+      border: 2px solid var(--border-color);
+      border-radius: 8px;
+      padding: 12px;
+      text-align: center;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 800;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+    }
+    .game-btn .game-icon {
+      font-size: 28px;
+    }
+    .game-btn:hover {
+      background: var(--surface-hover);
+      transform: translateY(-2px);
+    }
+    
+    /* Brand-Specific Selection Colors */
+    .game-btn[data-game="freefire"].selected { border-color: #ff9900; background: rgba(255, 153, 0, 0.1); box-shadow: 0 0 15px rgba(255, 153, 0, 0.2); color: #fff; }
+    .game-btn[data-game="bgmi"].selected { border-color: #ffcc00; background: rgba(255, 204, 0, 0.1); box-shadow: 0 0 15px rgba(255, 204, 0, 0.2); color: #fff; }
+    .game-btn[data-game="cod"].selected { border-color: #00ffcc; background: rgba(0, 255, 204, 0.1); box-shadow: 0 0 15px rgba(0, 255, 204, 0.2); color: #fff; }
+    .game-btn[data-game="minecraft"].selected { border-color: #00ee00; background: rgba(0, 238, 0, 0.1); box-shadow: 0 0 15px rgba(0, 238, 0, 0.2); color: #fff; }
+    .game-btn[data-game="8ball"].selected { border-color: #00aaff; background: rgba(0, 170, 255, 0.1); box-shadow: 0 0 15px rgba(0, 170, 255, 0.2); color: #fff; }
+
+    /* BUTTONS */
     .buttons {
       display: flex;
       gap: 12px;
@@ -310,9 +348,10 @@
       transform: translateY(-2px);
     }
 
-    .full-width-btn {
+.full-width-btn {
       width: 100%;
       margin-top: auto;
+      flex: none; /* This stops the button from stretching vertically */
     }
 
     /* ========== FEATURES ========== */
@@ -346,7 +385,6 @@
       display: flex;
     }
 
-    /* ========== FOOTER ========== */
     /* ========== FOOTER ========== */
     footer {
       background: linear-gradient(to bottom, var(--bg-color), #05070a);
@@ -393,7 +431,6 @@
       display: inline-block;
     }
     
-    /* Cool hover slide effect */
     .footer-links a:hover, .footer-socials a:hover {
       color: var(--primary);
       transform: translateX(5px); 
@@ -410,22 +447,6 @@
     .footer-bottom span {
       color: var(--primary);
       font-weight: 600;
-    }
-
-    /* Mobile overrides for the footer */
-    @media (max-width: 768px) {
-      .footer-inner {
-        grid-template-columns: 1fr;
-        text-align: center;
-        gap: 40px;
-        padding: 40px 20px 30px;
-      }
-      .footer-brand p {
-        margin: 0 auto;
-      }
-      .footer-links a:hover, .footer-socials a:hover {
-        transform: translateY(-2px); /* Vertical lift instead of slide on mobile */
-      }
     }
 
     /* ========== ANIMATIONS ========== */
@@ -464,7 +485,6 @@
         font-size: 16px;
       }
 
-      /* Hamburger animation */
       .menu-toggle.active span:nth-child(1) {
         transform: translateY(8px) rotate(45deg);
       }
@@ -475,19 +495,22 @@
         transform: translateY(-8px) rotate(-45deg);
       }
 
-      /* Mobile typography & spacing */
       .slide h1 { font-size: 26px; padding: 0 10px; }
       .section { padding: 40px 15px; }
       .app { padding: 24px; }
-      
-      /* Stack buttons on very small screens */
       .buttons { flex-direction: column; }
       
-      /* Stack footer columns */
       .footer-inner {
         grid-template-columns: 1fr;
         text-align: center;
-        gap: 20px;
+        gap: 40px;
+        padding: 40px 20px 30px;
+      }
+      .footer-brand p {
+        margin: 0 auto;
+      }
+      .footer-links a:hover, .footer-socials a:hover {
+        transform: translateY(-2px); 
       }
     }
   </style>
@@ -517,20 +540,19 @@
   <div class="carousel" id="carousel">
     <div class="slide"><h1>Make viewers <span>STOP scrolling</span></h1></div>
     <div class="slide"><h1>Perfect hooks for <span>Shorts & Reels</span></h1></div>
-    <div class="slide"><h1>Built for <span>Free Fire creators</span></h1></div>
+    <div class="slide"><h1>Built for <span>Gaming Creators</span></h1></div>
   </div>
   <div class="dots" id="dots"></div>
 </section>
 
 <section class="section" id="generator">
-  <h2>The Ultimate Hook Generator</h2>
-  <p class="subtitle">Create curiosity-driven hooks that skyrocket your watch time and engagement.</p>
+  <h2>The Ultimate Toolkit</h2>
+  <p class="subtitle">Generate viral hooks, reach out, or team up for a collab in seconds.</p>
   
   <div class="tool-wrap">
     
     <div class="app">
       <h3>Configure Your Hook</h3>
-
       <select id="mode">
         <option value="all">🎮 All Modes</option>
         <option value="1v1">⚔️ 1v1 Custom</option>
@@ -551,13 +573,36 @@
     </div>
 
     <div class="app">
-      <h3>Get in Touch</h3>
+      <h3>Wanna Play With Me?</h3>
       
+      <div class="game-selector">
+        <div class="game-btn selected" data-game="freefire">
+          <span class="game-icon">🔥</span> Free Fire
+        </div>
+        <div class="game-btn" data-game="bgmi">
+          <span class="game-icon">🪂</span> BGMI
+        </div>
+        <div class="game-btn" data-game="cod">
+          <span class="game-icon">🎯</span> COD
+        </div>
+        <div class="game-btn" data-game="minecraft">
+          <span class="game-icon">⛏️</span> Minecraft
+        </div>
+        <div class="game-btn" data-game="8ball">
+          <span class="game-icon">🎱</span> 8 Ball Pool
+        </div>
+      </div>
+
+      <input type="text" id="player-uid" placeholder="Enter Your UID / IGN" required>
+      <button class="generate full-width-btn" id="playBtn" onclick="submitPlayRequest()">Send Request</button>
+    </div>
+
+    <div class="app">
+      <h3>Get in Touch</h3>
       <form id="contactForm" style="display: flex; flex-direction: column; flex-grow: 1;">
         <input type="text" id="name" placeholder="Your Name" required>
         <input type="email" id="email" placeholder="Email Address" required>
         <textarea id="message" placeholder="What's on your mind?" required></textarea>
-        
         <button type="submit" class="generate full-width-btn">Send Message</button>
       </form>
     </div>
@@ -578,7 +623,7 @@
     </div>
     <div class="feature">
       <div class="feature-icon">🎯</div>
-      <div>Creator-tested hooks</div>
+      <div>Creator-tested logic</div>
     </div>
   </div>
 </section>
@@ -626,7 +671,6 @@
     navMenu.classList.toggle('active');
   });
 
-  // Close menu when clicking a link
   document.querySelectorAll('#nav-menu a').forEach(link => {
     link.addEventListener('click', () => {
       menuToggle.classList.remove('active');
@@ -667,7 +711,7 @@
   document.getElementById("hero").onmouseenter = stop;
   document.getElementById("hero").onmouseleave = start;
 
-  // --- PLACEHOLDER BUTTON LOGIC ---
+  // --- HOOK GENERATOR LOGIC ---
   function generateHook() {
     const hookBox = document.getElementById('hook');
     hookBox.style.color = "#ffffff";
@@ -686,43 +730,74 @@
       setTimeout(() => btn.innerText = "Copy Hook", 2000);
     }
   }
-</script>
-<script>
-document.getElementById("contactForm").addEventListener("submit", async (e) => {
-  e.preventDefault();
 
-  const name = document.getElementById("name").value;
-  const email = document.getElementById("email").value;
-  const message = document.getElementById("message").value;
+  // --- WANNA PLAY WITH ME LOGIC ---
+  const gameButtons = document.querySelectorAll('.game-btn');
+  let selectedGame = 'freefire';
 
-  const btn = e.target.querySelector("button");
-  btn.innerText = "Sending...";
-
-  try {
-    const res = await fetch("https://ff-hook-backend.onrender.com/contact", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name, email, message })
+  gameButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      gameButtons.forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      selectedGame = btn.getAttribute('data-game');
     });
+  });
 
-    const data = await res.json();
+  function submitPlayRequest() {
+    const uidInput = document.getElementById('player-uid');
+    const uid = uidInput.value.trim();
+    const btn = document.getElementById('playBtn');
 
-    if (data.success) {
-      btn.innerText = "Sent ✅";
-      e.target.reset();
-    } else {
-      btn.innerText = "Failed ❌";
+    if(!uid) {
+      uidInput.style.borderColor = "var(--primary)";
+      return;
     }
-  } catch (err) {
-    btn.innerText = "Error ❌";
+
+    btn.innerText = "Sending...";
+    uidInput.style.borderColor = "var(--border-color)";
+
+    setTimeout(() => {
+      btn.innerText = "Request Sent! 🎮";
+      uidInput.value = '';
+      setTimeout(() => btn.innerText = "Send Request", 3000);
+    }, 1000);
   }
 
-  setTimeout(() => {
-    btn.innerText = "Send Message";
-  }, 3000);
-});
+  // --- CONTACT FORM LOGIC ---
+  document.getElementById("contactForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const name = document.getElementById("name").value;
+    const email = document.getElementById("email").value;
+    const message = document.getElementById("message").value;
+
+    const btn = e.target.querySelector("button");
+    btn.innerText = "Sending...";
+
+    try {
+      const res = await fetch("https://ff-hook-backend.onrender.com/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, message })
+      });
+
+      const data = await res.json();
+
+      if (data.success) {
+        btn.innerText = "Sent ✅";
+        e.target.reset();
+      } else {
+        btn.innerText = "Failed ❌";
+      }
+    } catch (err) {
+      btn.innerText = "Error ❌";
+    }
+
+    setTimeout(() => {
+      btn.innerText = "Send Message";
+    }, 3000);
+  });
 </script>
-<script src="script.js"></script>
 
 </body>
 </html>
